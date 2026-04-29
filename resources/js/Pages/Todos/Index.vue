@@ -8,13 +8,14 @@
             </Link>
         </div>
 
-        <div v-if="$page.props.flash.success" class="alert alert-success alert-dismissible fade show" role="alert">
+        <div v-if="showAlert" class="alert alert-success alert-dismissible fade show" role="alert">
             {{ $page.props.flash.success }}
             <button
                 type="button"
                 class="btn-close"
                 data-bs-dismiss="alert"
                 aria-label="Close"
+                @click="showAlert = false"
             ></button>
         </div>
 
@@ -60,7 +61,8 @@
 </template>
 
 <script setup>
-import { Link, router } from '@inertiajs/vue3';
+import { ref, watch, onMounted } from 'vue';
+import { Link, router, usePage  } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 
 // Props passed from TodoController@index
@@ -70,6 +72,33 @@ const props = defineProps({
         required: true,
     },
 });
+
+const showAlert = ref(false);
+const page = usePage();
+
+/**
+ * Handle showing alert and auto hiding after 3 seconds
+ */
+const handleAlert = (value) => {
+    if (value) {
+        showAlert.value = true;
+
+        setTimeout(() => {
+            showAlert.value = false;
+        }, 3000);
+    }
+};
+
+onMounted(() => {
+    handleAlert(page.props.flash.success);
+});
+
+watch(
+    () => page.props.flash.success,
+    (newValue) => {
+        handleAlert(newValue);
+    }
+);
 
 /**
  * Delete a todo with confirmation

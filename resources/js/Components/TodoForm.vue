@@ -25,10 +25,11 @@
             <textarea
                 id="description"
                 v-model="form.description"
-                placeholder="Enter todo description"
+                :placeholder="readonly ? '' : 'Enter todo description'"
                 rows="4"
                 class="form-control"
                 :class="{ 'is-invalid': form.errors.description }"
+                :readonly="readonly"
             ></textarea>
             <div v-if="form.errors.description" class="invalid-feedback">
                 {{ form.errors.description }}
