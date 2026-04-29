@@ -1,49 +1,61 @@
 <template>
-    <div>
-        <h1>Todo List</h1>
-
-        <div v-if="$page.props.flash.success">
-            {{ $page.props.flash.success }}
+    <div class="container py-5">
+       
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 fw-bold"> Todo List</h1>
+            <Link :href="route('todos.create')">
+                Create New Todo
+            </Link>
         </div>
 
-        <Link :href="route('todos.create')">
-            Create New Todo
-        </Link>
+        <div v-if="$page.props.flash.success" class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ $page.props.flash.success }}
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+            ></button>
+        </div>
 
-        <table v-if="todos.length > 0">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Created At</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="todo in todos" :key="todo.id">
-                    <td>{{ todo.id }}</td>
-                    <td>{{ todo.name }}</td>
-                    <td>{{ todo.description ?? 'N/A' }}</td>
-                    <td>{{ todo.created_at }}</td>
-                    <td>
-                        <Link :href="route('todos.show', todo.id)">
-                            View
-                        </Link>
+        <div v-if="todos.length > 0" class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="todo in todos" :key="todo.id">
+                            <td>{{ todo.id }}</td>
+                            <td class="fw-semibold">{{ todo.name }}</td>
+                            <td class="text-muted">{{ todo.description ?? '' }}</td>
+                            <td class="text-muted">{{ new Date(todo.created_at).toLocaleDateString('en-GB') }}</td>
+                            <td>
+                                <Link :href="route('todos.show', todo.id)" class="btn btn-sm btn-info me-1">
+                                    View
+                                </Link>
+                                <Link :href="route('todos.edit', todo.id)" class="btn btn-sm btn-warning me-1">
+                                    Edit
+                                </Link>
+                                <button @click="deleteTodo(todo.id)" class="btn btn-sm btn-danger">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                        <Link :href="route('todos.edit', todo.id)">
-                            Edit
-                        </Link>
-
-                        <button @click="deleteTodo(todo.id)">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <p v-else>No todos found.</p>
+        <div v-else class="card shadow-sm text-center py-5">
+            <p class="text-muted fs-5">No todos found.</p>
+        </div>
     </div>
 </template>
 

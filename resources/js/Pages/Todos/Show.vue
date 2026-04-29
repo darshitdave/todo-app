@@ -1,52 +1,38 @@
 <template>
-    <div>
-        <h1>Todo Details</h1>
-
-        <table>
-            <tbody>
-                <tr>
-                    <th>ID</th>
-                    <td>{{ todo.id }}</td>
-                </tr>
-                <tr>
-                    <th>Name</th>
-                    <td>{{ todo.name }}</td>
-                </tr>
-                <tr>
-                    <th>Description</th>
-                    <td>{{ todo.description ?? ' ' }}</td>
-                </tr>
-                <tr>
-                    <th>Created At</th>
-                    <td>{{ todo.created_at }}</td>
-                </tr>
-                <tr>
-                    <th>Updated At</th>
-                    <td>{{ todo.updated_at }}</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <br>
-        <Link :href="route('todos.edit', todo.id)">
-            Edit
-        </Link>
-
-        <Link :href="route('todos.index')">
-            Back to List
-        </Link>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="mb-0">Todo Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <TodoForm
+                            :form="form"
+                            :readonly="true"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3';
-import { route } from 'ziggy-js'
+import { useForm  } from '@inertiajs/vue3';
+import TodoForm from '@/Components/TodoForm.vue';
 
 // Props passed from TodoController@show
-defineProps({
+const props = defineProps({
     todo: {
         type: Object,
         required: true,
     },
+})
+
+const form = useForm({
+    id:          props.todo.id,
+    name:        props.todo.name,
+    description: props.todo.description ?? '',
 });
 </script>

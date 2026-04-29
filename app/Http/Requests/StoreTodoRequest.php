@@ -35,7 +35,7 @@ class StoreTodoRequest extends FormRequest
     {
         return [
             'name.required' => 'Name is required.',
-            'name.min'      => 'Name must be at least 3 characters long',
+            'name.min'      => 'Name must be at least 2 characters long',
             'name.max'      => 'Name must not exceed 255 characters',
             'description.max' => 'Description must not exceed 1000 characters',
         ];

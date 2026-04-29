@@ -6,7 +6,7 @@ import { ZiggyVue } from 'ziggy-js';
 import { Ziggy } from './ziggy';
 
 createInertiaApp({
-    title: (title) => `${title} - Todo App`,
+    title: (title) => `Todo App`,
 
     resolve: (name) =>
         resolvePageComponent(
